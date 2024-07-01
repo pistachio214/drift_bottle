@@ -60,7 +60,7 @@ class MainPage extends StatelessWidget {
               ),
             ),
             Container(
-              margin: const EdgeInsets.symmetric(vertical: 8),
+              margin: const EdgeInsets.only(bottom: 30),
               height: 95,
               child: Stack(
                 alignment: Alignment.bottomCenter,
