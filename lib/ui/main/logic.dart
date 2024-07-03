@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:bottle/components/main_shadow_layer_component/logic.dart';
+import 'package:bottle/utils/loading_util.dart';
 import 'package:flutter/animation.dart';
 import 'package:get/get.dart';
 
@@ -8,6 +10,9 @@ import 'state.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
 class MainLogic extends GetxController with GetSingleTickerProviderStateMixin {
+  final MainShadowLayerComponentLogic layerLogic =
+      Get.put(MainShadowLayerComponentLogic());
+
   final MainState state = MainState();
 
   @override
@@ -26,7 +31,7 @@ class MainLogic extends GetxController with GetSingleTickerProviderStateMixin {
         //将动画重置到开始前的状态, 然后重新开始
         state.animationController.value.reset();
 
-        // 等待5秒后再出来
+        // 等待30秒后再出来
         Future.delayed(const Duration(milliseconds: 30000), () {
           state.animationController.value.forward();
         });
@@ -42,6 +47,30 @@ class MainLogic extends GetxController with GetSingleTickerProviderStateMixin {
     ).animate(state.animationController.value).obs;
 
     state.animationController.value.forward();
+  }
+
+  void onClickPick() {
+    LoadingUtil.show(message: "正在捞取中...");
+
+    // 模拟 api 异步请求,3秒后得到结果
+    Future.delayed(const Duration(milliseconds: 3000), () {
+      LoadingUtil.dismiss();
+      // 重置热气球
+      state.animationController.value.reset();
+
+      // 显示阴影层
+      Get.log("显示阴影层");
+      layerLogic.openModal();
+    });
+
+    // Future.delayed(const Duration(milliseconds: 5000), () {
+    //   Get.log("时间到了，执行启动");
+    //   state.animationController.value.forward();
+    // });
+  }
+
+  void onClosePick() {
+    layerLogic.closeModal();
   }
 
   void onClick() {

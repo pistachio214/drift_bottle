@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 class MainState {
   late RxDouble deskHeight = 40.0.obs;
 
+  late RxBool lightBool = false.obs;
+
   late RxString balloonAssetImage = "assets/bottle/balloon.png".obs;
 
   late RxString backgroundAssetImage = "assets/bottle/background.jpg".obs;

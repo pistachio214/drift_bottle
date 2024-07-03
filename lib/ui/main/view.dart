@@ -1,3 +1,5 @@
+import 'package:bottle/components/main_shadow_layer_component/view.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -23,92 +25,131 @@ class MainPage extends StatelessWidget {
         ),
         backgroundColor: Colors.black,
         centerTitle: true,
-      ),
-      body: Container(
-        width: Get.width,
-        height: Get.height,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          image: DecorationImage(
-            image: AssetImage(state.backgroundAssetImage.value),
-            fit: BoxFit.fill,
+        actions: [
+          TextButton(
+            onPressed: () => logic.onClosePick(),
+            child: Text("关闭阴影"),
           ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        ],
+      ),
+      body: Obx(
+        () => Stack(
           children: [
-            Obx(
-              () => SlideTransition(
-                position: state.slideAnimation.value,
-                child: Container(
-                  width: Get.width,
-                  height: 100,
-                  alignment: Alignment.centerLeft,
-                  child: UnconstrainedBox(
-                    child: Container(
-                      width: 35,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                        image: AssetImage(state.balloonAssetImage.value),
-                        fit: BoxFit.fitWidth,
-                      )),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(bottom: 30),
-              height: 95,
-              child: Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  Container(
-                    width: Get.width * 0.9,
-                    height: state.deskHeight.value,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(state.deskAssetImage.value),
-                        fit: BoxFit.fitWidth,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 10,
-                    child: Container(
-                      width: Get.width * 0.80,
-                      height: 85,
-                      alignment: Alignment.bottomCenter,
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          deskItemWidget(state.sendAssetImage.value, 40, 90),
-                          deskItemWidget(state.pickAssetImage.value, 60, 80),
-                          deskItemWidget(state.myAssetImage.value, 50, 80),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // 海岸层
+            seaSurfaceWidget(),
+            // 阴影层
+            MainShadowLayerComponentComponent(),
           ],
         ),
       ),
     );
   }
 
-  Widget deskItemWidget(String assetImage, double width, double height) {
+  // 底层的海面视图
+  Widget seaSurfaceWidget() {
     return Container(
-      width: width,
-      height: height,
+      width: Get.width,
+      height: Get.height,
       decoration: BoxDecoration(
+        color: Colors.white,
         image: DecorationImage(
-          image: AssetImage(assetImage),
-          fit: BoxFit.fitWidth,
+          image: AssetImage(state.backgroundAssetImage.value),
+          fit: BoxFit.fill,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Obx(
+            () => SlideTransition(
+              position: state.slideAnimation.value,
+              child: Container(
+                width: Get.width,
+                height: 100,
+                alignment: Alignment.centerLeft,
+                child: UnconstrainedBox(
+                  child: Container(
+                    width: 35,
+                    height: 60,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                      image: AssetImage(state.balloonAssetImage.value),
+                      fit: BoxFit.fitWidth,
+                    )),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(bottom: 30),
+            height: 95,
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Container(
+                  width: Get.width * 0.9,
+                  height: state.deskHeight.value,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(state.deskAssetImage.value),
+                      fit: BoxFit.fitWidth,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 10,
+                  child: Container(
+                    width: Get.width * 0.80,
+                    height: 85,
+                    alignment: Alignment.bottomCenter,
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        deskItemWidget(
+                          state.sendAssetImage.value,
+                          40,
+                          90,
+                          () => {},
+                        ),
+                        deskItemWidget(
+                          state.pickAssetImage.value,
+                          60,
+                          80,
+                          () => logic.onClickPick(),
+                        ),
+                        deskItemWidget(
+                          state.myAssetImage.value,
+                          50,
+                          80,
+                          () => {},
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget deskItemWidget(
+      String assetImage, double width, double height, Function onTap) {
+    return InkWell(
+      onTap: () => onTap(),
+      child: Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(assetImage),
+            fit: BoxFit.fitWidth,
+          ),
         ),
       ),
     );
