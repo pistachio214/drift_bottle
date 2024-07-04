@@ -12,6 +12,27 @@ class MainShadowLayerComponentComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
+        // () => Text("${state.visible.value}")
+      () => state.visible.value ?
+      //     ? AnimatedOpacity(
+      //         opacity: state.animation.value.value,
+      //         duration: state.animationController.value.duration!,
+      //         child:
+              Container(
+                width: Get.width,
+                height: Get.height,
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  image: DecorationImage(
+                    image: AssetImage(state.bottleLightAssetImage.value),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              // ),
+            )
+          : const SizedBox.shrink(),
+    );
+    return Obx(
       () => Visibility(
         visible: state.visible.value,
         child: AnimatedOpacity(

@@ -10,6 +10,6 @@ class MainShadowLayerComponentState {
   late RxString bottleLightAssetImage = "assets/bottle/bottleLight.png".obs;
 
   MainShadowLayerComponentState() {
-    visible = true.obs;
+    visible = false.obs;
   }
 }

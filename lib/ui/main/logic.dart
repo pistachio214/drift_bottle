@@ -53,7 +53,7 @@ class MainLogic extends GetxController with GetSingleTickerProviderStateMixin {
     LoadingUtil.show(message: "正在捞取中...");
 
     // 模拟 api 异步请求,3秒后得到结果
-    Future.delayed(const Duration(milliseconds: 3000), () {
+    Future.delayed(const Duration(milliseconds: 1000), () {
       LoadingUtil.dismiss();
       // 重置热气球
       state.animationController.value.reset();
